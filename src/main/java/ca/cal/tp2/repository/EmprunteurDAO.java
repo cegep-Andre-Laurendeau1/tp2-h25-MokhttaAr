@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EmprunteurDAO implements IEmprunteurDAO {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("hibernate2.tp");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("tp2mokhtar.tp");
 
     @Override
     public void save(Emprunteur emprunteur) {
