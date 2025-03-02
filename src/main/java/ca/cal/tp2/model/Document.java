@@ -17,12 +17,15 @@ public abstract class Document {
     @Column(name = "NOMBRE_EXEMPLAIRES", nullable = false)
     protected int nombreExemplaires;
 
+
+
     public Document() {}
 
     public Document(long documentID, String titre, int nombreExemplaires) {
         this.documentID = documentID;
         this.titre = titre;
         this.nombreExemplaires = nombreExemplaires;
+
     }
 
     public long getDocumentID() {
@@ -44,6 +47,8 @@ public abstract class Document {
             nombreExemplaires--;
         }
     }
+
+
 
     public void incrementExemplaires() {
         nombreExemplaires++;

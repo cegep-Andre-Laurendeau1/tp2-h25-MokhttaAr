@@ -16,15 +16,19 @@ public class Livre extends Document {
     @Column(name = "NOMBRE_PAGES")
     private int nombrePages;
 
+    @Column(name = "ANNEE")
+    protected int annee;
+
     public Livre() {}
 
     public Livre(long documentID, String titre, int nombreExemplaires,
-                 String ISBN, String auteur, String editeur, int nombrePages) {
+                 String ISBN, String auteur, String editeur, int nombrePages, int annee) {
         super(documentID, titre, nombreExemplaires);
         this.ISBN = ISBN;
         this.auteur = auteur;
         this.editeur = editeur;
         this.nombrePages = nombrePages;
+        this.annee = annee;
     }
 
 
@@ -42,6 +46,7 @@ public class Livre extends Document {
     public int getNombrePages() {
         return nombrePages;
     }
+    public int getAnnee() {return annee; }
 
     @Override
     public String toString() {

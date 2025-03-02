@@ -33,7 +33,8 @@ public class DocumentMapper <T extends Document, D extends DocumentDTO> extends 
                     livreDTO.getISBN(),
                     livreDTO.getAuteur(),
                     livreDTO.getEditeur(),
-                    livreDTO.getNombrePages()
+                    livreDTO.getNombrePages(),
+                    livreDTO.getAnnee()
             );
         } else if (entityClass == CD.class && dto instanceof CDDTO) {
             CDDTO cdDTO = (CDDTO) dto;
@@ -72,6 +73,7 @@ public class DocumentMapper <T extends Document, D extends DocumentDTO> extends 
             dto.setAuteur(livre.getAuteur());
             dto.setEditeur(livre.getEditeur());
             dto.setNombrePages(livre.getNombrePages());
+            dto.setAnnee(livre.getAnnee());
             return (D) dto;
         } else if (entity instanceof CD && dtoClass == CDDTO.class) {
             CD cd = (CD) entity;

@@ -12,8 +12,9 @@ package ca.cal.tp2;
 
 
        import java.sql.SQLException;
+       import java.util.List;
 
-       public class Main {
+public class Main {
            public static void main(String[] args) throws SQLException {
                TcpServer.createTcpServer();
 
@@ -37,7 +38,8 @@ package ca.cal.tp2;
                        "978-2253096344",
                        "Victor Hugo",
                        "Le Livre de Poche",
-                       1472
+                       1472 ,
+                          1862
                );
                livreDAO.save(livre);
                System.out.println("Livre ajouté avec succès: " + livre);
@@ -89,7 +91,8 @@ package ca.cal.tp2;
                        "978-2070413119",
                        "Victor Hugo",
                        "Gallimard",
-                       512
+                       512 ,
+                          1856
                );
                livreDAO.save(livreNonDisponible);
                System.out.println("Livre créé sans exemplaires: " + livreNonDisponible);
@@ -111,5 +114,32 @@ package ca.cal.tp2;
 
 
 
+               System.out.println("\n=== TEST: RECHERCHE DE DOCUMENTS PAR CRITÈRES ===");
+
+               // 1. Recherche par titre partiel
+               System.out.println("\n-> Recherche de livres contenant 'Mis' dans le titre:");
+               List<LivreDTO> livresParTitre = livreMapper.searchDocuments("Mis", null, null);
+               livreMapper.afficherResultatsRecherche(livresParTitre, "livres");
+
+                // 2. Recherche par auteur
+               System.out.println("\n-> Recherche de documents par auteur 'Victor Hugo':");
+               List<LivreDTO> livresParAuteur = livreMapper.searchDocuments(null, "Hugo", null);
+               livreMapper.afficherResultatsRecherche(livresParAuteur, "livres");
+
+                // 3. Recherche de CD par artiste
+               System.out.println("\n-> Recherche de CDs par artiste 'Michael':");
+               List<CDDTO> cdsParArtiste = cdMapper.searchDocuments(null, "Michael", null);
+               cdMapper.afficherResultatsRecherche(cdsParArtiste, "CDs");
+
+                // 4. Recherche de DVD par réalisateur
+               System.out.println("\n-> Recherche de DVDs par réalisateur 'Jackson':");
+               List<DVDDTO> dvdsParDirecteur = dvdMapper.searchDocuments(null, "Jackson", null);
+               dvdMapper.afficherResultatsRecherche(dvdsParDirecteur, "DVDs");
+
+
+
+
+
            }
+
        }

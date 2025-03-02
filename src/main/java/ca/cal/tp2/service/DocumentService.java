@@ -27,6 +27,25 @@ public abstract class DocumentService<T extends Document, D extends DocumentDTO>
                 .collect(Collectors.toList());
     }
 
+    public List<D> searchDocuments(String title, String author, Integer year) throws SQLException {
+        List<T> documents = documentDAO.searchByCriteria(title, author, year);
+        return documents.stream()
+                .map(this::convertEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Méthode d'affichage générique
+    public void afficherResultatsRecherche(List<? extends DocumentDTO> resultats, String type) {
+        if (resultats.isEmpty()) {
+            System.out.println("Aucun " + type + " trouvé");
+        } else {
+            System.out.println("Résultats trouvés (" + resultats.size() + ") :");
+            for (DocumentDTO doc : resultats) {
+                System.out.println("- " + doc.getTitre() + " (" + doc.getNombreExemplaires() + " exemplaires)");
+            }
+        }
+    }
+
 
 
     protected abstract T convertDTOToEntity(D documentDTO);

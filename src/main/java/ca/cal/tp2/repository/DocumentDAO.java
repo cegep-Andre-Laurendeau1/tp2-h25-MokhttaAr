@@ -51,6 +51,55 @@ public class DocumentDAO<T extends Document> implements IDocumentDAO<T> {
     }
 
 
+    @Override
+    public List<T> searchByCriteria(String title, String author, Integer year) throws SQLException {
+        EntityManager em = emf.createEntityManager();
+        try {
+            StringBuilder queryBuilder = new StringBuilder("SELECT d FROM " + entityClass.getSimpleName() + " d WHERE 1=1");
+
+            if (title != null && !title.isEmpty()) {
+                queryBuilder.append(" AND LOWER(d.titre) LIKE LOWER(:title)");
+            }
+
+            // Gérer les différents champs d'auteur selon le type de document
+            if (author != null && !author.isEmpty()) {
+                if (entityClass.getSimpleName().equals("Livre")) {
+                    queryBuilder.append(" AND LOWER(d.auteur) LIKE LOWER(:author)");
+                } else if (entityClass.getSimpleName().equals("CD")) {
+                    queryBuilder.append(" AND LOWER(d.artiste) LIKE LOWER(:author)");
+                } else if (entityClass.getSimpleName().equals("DVD")) {
+                    queryBuilder.append(" AND LOWER(d.director) LIKE LOWER(:author)");
+                }
+            }
+
+            // Année uniquement pour les livres
+            if (year != null && entityClass.getSimpleName().equals("Livre")) {
+                queryBuilder.append(" AND d.annee = :year");
+            }
+
+            TypedQuery<T> query = em.createQuery(queryBuilder.toString(), entityClass);
+
+            if (title != null && !title.isEmpty()) {
+                query.setParameter("title", "%" + title + "%");
+            }
+
+            if (author != null && !author.isEmpty()) {
+                query.setParameter("author", "%" + author + "%");
+            }
+
+            if (year != null && entityClass.getSimpleName().equals("Livre")) {
+                query.setParameter("year", year);
+            }
+
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new SQLException(e);
+        } finally {
+            em.close();
+        }
+    }
+
+
 
 
 }

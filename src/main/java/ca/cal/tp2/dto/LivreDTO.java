@@ -5,6 +5,7 @@ public class LivreDTO extends DocumentDTO {
     private String auteur;
     private String editeur;
     private int nombrePages;
+    private int annee;
 
     // Getters and setters
     public String getISBN() { return ISBN; }
@@ -15,4 +16,6 @@ public class LivreDTO extends DocumentDTO {
     public void setEditeur(String editeur) { this.editeur = editeur; }
     public int getNombrePages() { return nombrePages; }
     public void setNombrePages(int nombrePages) { this.nombrePages = nombrePages; }
+    public int getAnnee() { return annee; }
+    public void setAnnee(int annee) { this.annee = annee; }
 }

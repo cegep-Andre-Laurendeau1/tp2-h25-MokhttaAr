@@ -7,4 +7,5 @@ import java.util.List;
 public interface IDocumentDAO<T extends Document> {
     void save(T document) throws SQLException;
     List<T> findAvailable() throws SQLException;
+    List<T> searchByCriteria(String title, String author, Integer year) throws SQLException;
 }
