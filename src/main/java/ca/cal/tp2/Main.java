@@ -4,7 +4,7 @@ package ca.cal.tp2;
        import ca.cal.tp2.model.DVD;
        import ca.cal.tp2.model.Livre;
        import ca.cal.tp2.repository.DocumentDAO;
-       import ca.cal.tp2.service.EmprunteurService;
+       import ca.cal.tp2.service.EmpruntService;
        import ca.cal.tp2.dto.LivreDTO;
        import ca.cal.tp2.dto.CDDTO;
        import ca.cal.tp2.dto.DVDDTO;
@@ -19,7 +19,7 @@ public class Main {
                TcpServer.createTcpServer();
 
 
-               EmprunteurService service = new EmprunteurService();
+               EmpruntService service = new EmpruntService();
                String nom = "Jean Dupont";
                String email = "jean.dupont@example.com";
                String telephone = "0123456789";
@@ -87,7 +87,7 @@ public class Main {
                Livre livreNonDisponible = new Livre(
                        0, // ID sera généré automatiquement
                        "Les Contemplations",
-                       1, // aucun exemplaire disponible
+                       0, // aucun exemplaire disponible
                        "978-2070413119",
                        "Victor Hugo",
                        "Gallimard",
@@ -135,6 +135,29 @@ public class Main {
                System.out.println("\n-> Recherche de DVDs par réalisateur 'Jackson':");
                List<DVDDTO> dvdsParDirecteur = dvdMapper.searchDocuments(null, "Jackson", null);
                dvdMapper.afficherResultatsRecherche(dvdsParDirecteur, "DVDs");
+
+
+
+
+               System.out.println("\n=== TEST: EMPRUNT DE DOCUMENT ===");
+
+               EmpruntService empruntService = new EmpruntService();
+
+               empruntService.registerEmprunteur("Lucas Martin", "lucas.martin@example.com", "0611223344");
+
+               try {
+                   System.out.println("Tentative d'emprunt du livre: " + livre.getTitre());
+                   empruntService.emprunterDocument(livre.getDocumentID(), 1);
+               } catch (SQLException e) {
+                   System.out.println("Erreur: " + e.getMessage());
+               }
+
+               try {
+                   System.out.println("\nTentative d'emprunt d'un document sans exemplaires disponibles:");
+                   empruntService.emprunterDocument(livreNonDisponible.getDocumentID(), 2);
+               } catch (SQLException e) {
+                   System.out.println("Erreur: " + e.getMessage());
+               }
 
 
 
