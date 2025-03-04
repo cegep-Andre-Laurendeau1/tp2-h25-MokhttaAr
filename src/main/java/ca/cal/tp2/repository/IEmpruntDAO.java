@@ -9,4 +9,5 @@ import java.util.List;
 public interface IEmpruntDAO {
     void saveEmprunteur(Emprunteur emprunteur) throws SQLException;
     void saveEmprunt(Emprunt emprunt) throws SQLException;
+    List<Emprunt> findByEmprunteur(long emprunteurId) throws SQLException;
 }

@@ -51,6 +51,25 @@ public class EmpruntDAO implements IEmpruntDAO{
         }
     }
 
+    @Override
+    public List<Emprunt> findByEmprunteur(long emprunteurId) throws SQLException {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Emprunt> query = em.createQuery(
+                    "SELECT DISTINCT e FROM Emprunt e " +
+                            "JOIN FETCH e.items i " +
+                            "JOIN FETCH i.document " +
+                            "WHERE e.emprunteur.userID = :emprunteurId",
+                    Emprunt.class);
+            query.setParameter("emprunteurId", emprunteurId);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new SQLException(e);
+        } finally {
+            em.close();
+        }
+    }
+
 
 
 

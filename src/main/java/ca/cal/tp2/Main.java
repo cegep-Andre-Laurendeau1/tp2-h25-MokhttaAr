@@ -162,6 +162,14 @@ public class Main {
 
 
 
+               System.out.println("\n=== TEST: AFFICHER LES EMPRUNTS D'UN EMPRUNTEUR AVEC DTOs ===");
+
+                   empruntService.afficherEmpruntsEmprunteurDTO(1);
+
+
+
+
+
 
            }
 
