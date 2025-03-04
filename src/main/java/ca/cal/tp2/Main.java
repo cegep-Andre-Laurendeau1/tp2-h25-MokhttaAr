@@ -3,7 +3,6 @@ package ca.cal.tp2;
        import ca.cal.tp2.model.CD;
        import ca.cal.tp2.model.DVD;
        import ca.cal.tp2.model.Livre;
-       import ca.cal.tp2.repository.DocumentDAO;
        import ca.cal.tp2.service.EmpruntService;
        import ca.cal.tp2.dto.LivreDTO;
        import ca.cal.tp2.dto.CDDTO;
@@ -18,30 +17,31 @@ public class Main {
            public static void main(String[] args) throws SQLException {
                TcpServer.createTcpServer();
 
-
+               DocumentMapper<Livre, LivreDTO> livreMapper = new DocumentMapper<>(Livre.class, LivreDTO.class);
+               DocumentMapper<CD, CDDTO> cdMapper = new DocumentMapper<>(CD.class, CDDTO.class);
+               DocumentMapper<DVD, DVDDTO> dvdMapper = new DocumentMapper<>(DVD.class, DVDDTO.class);
                EmpruntService service = new EmpruntService();
+
                String nom = "Jean Dupont";
                String email = "jean.dupont@example.com";
                String telephone = "0123456789";
                service.registerEmprunteur(nom, email, telephone);
 
+               System.out.println("Client enregistré avec succès: " + nom + ", " + email + ", " + telephone);
 
-               DocumentDAO<Livre> livreDAO = new DocumentDAO<>(Livre.class);
-               DocumentDAO<CD> cdDAO = new DocumentDAO<>(CD.class);
-               DocumentDAO<DVD> dvdDAO = new DocumentDAO<>(DVD.class);
 
 
                Livre livre = new Livre(
                        0, // ID sera généré automatiquement
                        "Les Misérables",
-                       3, // nombre d'exemplaires
+                       3,
                        "978-2253096344",
                        "Victor Hugo",
                        "Le Livre de Poche",
                        1472 ,
                           1862
                );
-               livreDAO.save(livre);
+               livreMapper.addDocument(livre);
                System.out.println("Livre ajouté avec succès: " + livre);
 
 
@@ -54,7 +54,7 @@ public class Main {
                        42,
                        "Pop"
                );
-               cdDAO.save(cd);
+               cdMapper.addDocument(cd);
                System.out.println("CD ajouté avec succès: " + cd);
 
 
@@ -66,19 +66,11 @@ public class Main {
                        178,
                        "PG-13"
                );
-               dvdDAO.save(dvd);
+               dvdMapper.addDocument(dvd);
                System.out.println("DVD ajouté avec succès: " + dvd);
 
                System.out.println("Enregistrement terminé.");
 
-
-
-               System.out.println("\n=== TEST: RECHERCHE DES DOCUMENTS DISPONIBLES ===");
-
-
-               DocumentMapper<Livre, LivreDTO> livreMapper = new DocumentMapper<>(Livre.class, LivreDTO.class);
-               DocumentMapper<CD, CDDTO> cdMapper = new DocumentMapper<>(CD.class, CDDTO.class);
-               DocumentMapper<DVD, DVDDTO> dvdMapper = new DocumentMapper<>(DVD.class, DVDDTO.class);
 
 
                System.out.println("\n=== TEST: EMPRUNT IMPOSSIBLE SI AUCUN EXEMPLAIRE DISPONIBLE ===");
@@ -94,7 +86,7 @@ public class Main {
                        512 ,
                           1856
                );
-               livreDAO.save(livreNonDisponible);
+               livreMapper.addDocument(livreNonDisponible);
                System.out.println("Livre créé sans exemplaires: " + livreNonDisponible);
 
                 // Tentative d'emprunt
@@ -162,7 +154,7 @@ public class Main {
 
 
 
-               System.out.println("\n=== TEST: AFFICHER LES EMPRUNTS D'UN EMPRUNTEUR AVEC DTOs ===");
+               System.out.println("\n=== TEST: AFFICHER LES EMPRUNTS D'UN EMPRUNTEUR");
 
                    empruntService.afficherEmpruntsEmprunteurDTO(1);
 

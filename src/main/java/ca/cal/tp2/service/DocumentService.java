@@ -15,8 +15,7 @@ public abstract class DocumentService<T extends Document, D extends DocumentDTO>
         this.documentDAO = documentDAO;
     }
 
-    public void addDocument(D documentDTO) throws SQLException {
-        T document = convertDTOToEntity(documentDTO);
+    public void addDocument(T document) throws SQLException {
         documentDAO.save(document);
     }
 
