@@ -20,6 +20,7 @@ public class Emprunt {
     @Column(name = "STATUS")
     private String status;
 
+    //verifier si le fetch est bien LAZY
     @OneToMany(mappedBy = "emprunt", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EmpruntDetail> items;
 
